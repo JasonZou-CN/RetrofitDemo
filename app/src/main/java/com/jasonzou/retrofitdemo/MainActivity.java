@@ -8,6 +8,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,14 +38,48 @@ public class MainActivity extends Activity {
 
 
         API api = APIMaster.getAPI();
-        useNormalCallAdapter(phone, api);
+        useRxjavaCallAdapter(phone, api);
 
     }
 
+    /**
+     * RXJava2 + Retrofit
+     *
+     * @param phone
+     * @param api
+     */
     private void useRxjavaCallAdapter(String phone, API api) {
+        Observable<UserInfo> userInfo = api.loginWithRxJava(phone, "123456", "account");
+        userInfo.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<UserInfo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
+            }
+
+            @Override
+            public void onNext(UserInfo userInfo) {
+                Toast.makeText(MainActivity.this, "更新", Toast.LENGTH_SHORT).show();
+                who.setText(userInfo.data.list.realname);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
+    /**
+     * Retrofit
+     *
+     * @param phone
+     * @param api
+     */
     private void useNormalCallAdapter(String phone, API api) {
         Call<UserInfo> userInfo = api.login(phone, "123456", "account");
         userInfo.enqueue(new Callback<UserInfo>() {
