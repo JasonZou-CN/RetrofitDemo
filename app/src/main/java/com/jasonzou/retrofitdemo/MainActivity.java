@@ -11,8 +11,6 @@ import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends Activity {
 
@@ -31,11 +29,19 @@ public class MainActivity extends Activity {
 
     public void login(View view) {
         String phone = account.getText().toString();
-        phone = phone == null ? "13219155257" : phone;
+        phone = phone.isEmpty() ? "13219155257" : phone;
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(API.HOST).addConverterFactory(GsonConverterFactory.create()).build();
 
-        API api = retrofit.create(API.class);
+        API api = APIMaster.getAPI();
+        useNormalCallAdapter(phone, api);
+
+    }
+
+    private void useRxjavaCallAdapter(String phone, API api) {
+
+    }
+
+    private void useNormalCallAdapter(String phone, API api) {
         Call<UserInfo> userInfo = api.login(phone, "123456", "account");
         userInfo.enqueue(new Callback<UserInfo>() {
             @Override
@@ -49,7 +55,6 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this, "exception", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
 }
