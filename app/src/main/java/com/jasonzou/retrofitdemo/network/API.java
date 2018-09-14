@@ -1,5 +1,7 @@
-package com.jasonzou.retrofitdemo;
+package com.jasonzou.retrofitdemo.network;
 
+
+import com.jasonzou.retrofitdemo.bean.UserInfo;
 
 import io.reactivex.Observable;
 import retrofit2.Call;

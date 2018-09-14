@@ -1,4 +1,4 @@
-package com.jasonzou.retrofitdemo;
+package com.jasonzou.retrofitdemo.bean;
 
 public class UserInfo {
     public String msg;

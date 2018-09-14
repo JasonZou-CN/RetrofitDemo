@@ -8,6 +8,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jasonzou.retrofitdemo.bean.UserInfo;
+import com.jasonzou.retrofitdemo.network.API;
+import com.jasonzou.retrofitdemo.network.APIMaster;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
