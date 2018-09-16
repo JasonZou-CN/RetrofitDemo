@@ -1,7 +1,5 @@
 package com.jasonzou.retrofitdemo.network;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +29,6 @@ public class CommonHeadersInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Log.d("Interceptor", "add common params");
         Request originalRequest = chain.request();
         // 添加新的参数，添加到url 中
         /*HttpUrl.Builder authorizedUrlBuilder = originalRequest.url().newBuilder()

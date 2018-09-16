@@ -39,4 +39,6 @@ public interface API {
     @POST("lawyer/login/index")
     @FormUrlEncoded
     Observable<UserInfo> loginWithRxJava(@Field("account") String account, @Field("password") String password, @Field("loginType") String loginType);
+
+
 }
