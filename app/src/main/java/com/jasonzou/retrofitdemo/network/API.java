@@ -1,10 +1,13 @@
 package com.jasonzou.retrofitdemo.network;
 
 
+import com.jasonzou.retrofitdemo.bean.CaseList;
+import com.jasonzou.retrofitdemo.bean.CaseListParm;
 import com.jasonzou.retrofitdemo.bean.UserInfo;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -40,5 +43,7 @@ public interface API {
     @FormUrlEncoded
     Observable<UserInfo> loginWithRxJava(@Field("account") String account, @Field("password") String password, @Field("loginType") String loginType);
 
+    @POST("lawyer/Lawcase/getCaseList")
+    Observable<CaseList> getProjectList(@Body CaseListParm parm);
 
 }

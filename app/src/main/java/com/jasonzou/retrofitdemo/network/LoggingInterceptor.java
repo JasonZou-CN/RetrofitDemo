@@ -5,8 +5,10 @@ import com.orhanobut.logger.Logger;
 import java.io.IOException;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * 项目:  RetrofitDemo <br>
@@ -30,7 +32,11 @@ public class LoggingInterceptor implements Interceptor {
         Logger.d(String.format("Received response for %s in %.1fms%n%s",
                 response.request().url(), (t2 - t1) / 1e6d, response.headers()));
 
-        Logger.json(response.body().string());
-        return response;
+        String res = response.body().string();
+        //body只能读取一次，读取完以后就关闭掉了。
+        //Logger.json(response.body().string());
+        final Response newRes = response.newBuilder().body(ResponseBody.create(MediaType.parse("UTF-8"),res)).build();
+        Logger.json(res);
+        return newRes;
     }
 }
