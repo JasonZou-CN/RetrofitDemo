@@ -85,6 +85,7 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(int id, File file) {
                 who.setText(file.getAbsolutePath());
+             Logger.i("下载完成");
             }
 
             @Override
@@ -94,7 +95,8 @@ public class MainActivity extends Activity {
 
             @Override
             public void onProgress(int id, int progress) {
-                who.setText(progress+"%");
+                //                who.setText(progress+"%");
+                who.setText(String.format("%d%%", progress));
             }
 
             @Override
