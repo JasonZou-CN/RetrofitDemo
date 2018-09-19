@@ -1,13 +1,17 @@
 package com.jasonzou.retrofitdemo.network;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 
 import com.orhanobut.logger.Logger;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
@@ -19,19 +23,45 @@ import java.util.Map;
  */
 public class FileUploader {
 
+    //   操作码
+    private final int START = 0;
+    private final int PROGRESS = 1;
+    private final int SUCCESS = 2;
+    private final int FAIL = -1;
+
+    //  请求体  - 数据边界，参考PostMan
     private final String end = "\r\n";
     private final String twoHyphens = "--";
     private final String boundary = "*****";
 
-    boolean interupted = false; // 是否强制停止下载线程
     private final String urlStr; // 下载URL
-    private IOnFileUpdateListener listener;
     private final Map<String, String> parms;
     private final File uploadFile;
+    private final IOnFileUpdateListener listener;
 
-    private int progress;//当前进度
-    private int total;//已上传数据大小
-    private long max;
+    boolean interupted = false; // 是否强制停止下载线程
+    private int progress = 0;//当前进度
+    private Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (listener == null)
+                return;
+            switch (msg.what) {
+                case START:
+                    listener.onStart((Long) msg.obj);
+                    break;
+                case PROGRESS:
+                    listener.onProgress((Integer) msg.obj);
+                    break;
+                case SUCCESS:
+                    listener.onSuccess((String) msg.obj);
+                    break;
+                case FAIL:
+                    listener.onFail((Exception) msg.obj);
+                    break;
+            }
+        }
+    };
 
     private FileUploader(Builder builder) {
         urlStr = builder.urlStr;
@@ -86,23 +116,22 @@ public class FileUploader {
                     dos.writeBytes(end);
                     /* 取得文件的FileInputStream */
                     FileInputStream fis = new FileInputStream(uploadFile);
-                    max = fis.getChannel().size();
-                    if (listener != null) {
-                        //listener.onStart(max);
-                    }
+                    long max = fis.getChannel().size();
+                    Logger.d("文件上传:%s \r\n文件大小:%d", urlStr, max);
+                    sendMsg(START, max);
                     /* 设置每次写入1024bytes */
                     int bufferSize = 1024;
                     byte[] buffer = new byte[bufferSize];
                     int length;
                     /* 从文件读取数据至缓冲区 */
+                    int total = 0;
                     while (!interupted && (length = fis.read(buffer)) != -1) {//取消上传控制
                         /* 将资料写入DataOutputStream中 */
                         total += length;
                         dos.write(buffer, 0, length);
-                        if (listener != null) {
-                            progress = (int) Math.rint(total * 1.0 / max * 100f);
-                            listener.onProgress(progress);//百分比-整数
-                        }
+                        progress = (int) Math.rint(total * 1.0 / max * 100f);
+                        sendMsg(PROGRESS, progress);
+                        Logger.d("上传进度:%d", progress);
                     }
                     dos.writeBytes(end);
                     dos.writeBytes(twoHyphens + boundary + twoHyphens + end);
@@ -112,28 +141,34 @@ public class FileUploader {
 
 
                     /*【4.取得Response内容】*/
-                    InputStream is = con.getInputStream();
-                    int ch;
+                    //                    InputStream is = con.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    String temp;
                     StringBuffer b = new StringBuffer();
-                    while ((ch = is.read()) != -1) {
-                        b.append((char) ch);
+                    while ((temp = br.readLine()) != null) {
+                        b.append(temp);
                     }
-                    if (is != null && listener != null) {
-                        listener.onSuccess(b.toString().trim());
-                    }
+                    sendMsg(SUCCESS, b.toString().trim());
                     /* 将Response显示于Dialog */
-                    Logger.d("上传成功:" + b.toString().trim() );
+                    Logger.d("上传成功:%s", b.toString().trim());
                     /* 关闭DataOutputStream */
                     dos.close();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (listener != null)
-                        listener.onFail(e);
-                    Logger.d("FileUploader", "上传失败:" + e);
+                    Logger.d("上传失败:%s", e.toString());
+                    sendMsg(FAIL, e);
                 }
             }
         }).start();
         return this;
+    }
+
+    private void sendMsg(int status, Object data) {
+        Message msg;
+        msg = handler.obtainMessage();
+        msg.what = status;
+        msg.obj = data;
+        handler.sendMessage(msg);
     }
 
     public int getProgress() {
@@ -162,15 +197,16 @@ public class FileUploader {
 
         void onFail(Exception e);
 
+        void onStart(long max);
     }
 
     public static final class Builder {
         private final String urlStr;
-        private IOnFileUpdateListener listener;
         private final Map<String, String> parms;
         private final File uploadFile;
+        private IOnFileUpdateListener listener;
 
-        private Builder(@NonNull String urlStr, @NonNull Map<String, String> parms,@NonNull File uploadFile) {
+        private Builder(@NonNull String urlStr, @NonNull Map<String, String> parms, @NonNull File uploadFile) {
             this.urlStr = urlStr;
             this.parms = parms;
             this.uploadFile = uploadFile;

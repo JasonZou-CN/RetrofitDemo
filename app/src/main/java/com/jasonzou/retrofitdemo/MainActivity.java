@@ -17,10 +17,13 @@ import com.jasonzou.retrofitdemo.bean.UserInfo;
 import com.jasonzou.retrofitdemo.network.API;
 import com.jasonzou.retrofitdemo.network.APIMaster;
 import com.jasonzou.retrofitdemo.network.FileDownloader;
+import com.jasonzou.retrofitdemo.network.FileUploader;
 import com.jasonzou.retrofitdemo.util.MPermissions;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -67,6 +70,18 @@ public class MainActivity extends Activity {
         permiss = MPermissions.init(this, new MPermissions.ICalllback() {
             @Override
             public void onSuccess() {
+                uploadFile();
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        }).reqPermission(0, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        /*permiss = MPermissions.init(this, new MPermissions.ICalllback() {
+            @Override
+            public void onSuccess() {
                 downloadFile();
             }
 
@@ -74,7 +89,39 @@ public class MainActivity extends Activity {
             public void onFail() {
 
             }
-        }).reqPermission(0, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }).reqPermission(0, Manifest.permission.WRITE_EXTERNAL_STORAGE);*/
+
+
+    }
+
+    public void uploadFile() {
+        String url = "https://lz.lcoce.com/lawyer/" + "upload/uploadAvatarFile";
+        Map<String, String> param = new HashMap<>();
+        param.put("uid", 194 + "");
+        param.put("token", "bf30b2007a359cb17e6a694231d34c0a");
+        param.put("type", "1");
+
+        FileUploader.newBuilder(url, param, new File(Environment.getExternalStorageDirectory(), "temp.jpg")).listener(new FileUploader.IOnFileUpdateListener() {
+            @Override
+            public void onSuccess(String response) {
+                who.setText(response);
+            }
+
+            @Override
+            public void onProgress(int progress) {
+                who.setText(String.format("%d%%", progress));
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                who.setText(e.toString());
+            }
+
+            @Override
+            public void onStart(long max) {
+                who.setText(String.format("%d", max));
+            }
+        }).build().upload();
     }
 
 
@@ -85,7 +132,7 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(int id, File file) {
                 who.setText(file.getAbsolutePath());
-             Logger.i("下载完成");
+                Logger.i("下载完成");
             }
 
             @Override
