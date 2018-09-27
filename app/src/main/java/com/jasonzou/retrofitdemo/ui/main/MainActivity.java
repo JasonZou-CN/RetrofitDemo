@@ -1,4 +1,4 @@
-package com.jasonzou.retrofitdemo;
+package com.jasonzou.retrofitdemo.ui.main;
 
 import android.Manifest;
 import android.app.Activity;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jasonzou.retrofitdemo.R;
 import com.jasonzou.retrofitdemo.bean.CaseList;
 import com.jasonzou.retrofitdemo.bean.CaseListParm;
 import com.jasonzou.retrofitdemo.bean.UserInfo;
