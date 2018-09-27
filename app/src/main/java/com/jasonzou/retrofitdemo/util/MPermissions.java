@@ -40,10 +40,8 @@ public class MPermissions {
     private final Activity activity;
     private final Context ctx;
     private final String permissionDesc;
-    private final int requestCode;//初始为-1
+    private final int requestCode;
     private final String[] permissions;
-    private int reqStatus = 0;//0：未请求；1：已请求；2：已授权；3：已拒绝；4：不再提醒；
-    //    private final String permission;
 
     private MPermissions(Builder builder) {
         iCalllback = builder.iCalllback;
@@ -67,81 +65,11 @@ public class MPermissions {
         return requestCode;
     }
 
-    /**
-     * @return 0：未请求；1：已请求；2：已授权；3：已拒绝；4：不再提醒；
-     */
-   /* public int getReqStatus() {
-        return reqStatus;
-    }*/
     public MPermissions request() {
         reqPermissions(requestCode, permissions);
         return this;
     }
 
-    /**
-     * 请求权限
-     *
-     * @param permission
-     */
-    /*private MPermissions reqPermission(final String permission) {
-     *//*if (this.permission != null && !this.permission.equals(permission) || this.permissions != null)
-            throw new IllegalArgumentException("one MPermissions instance only can request one permission or one group permission");*//*
-     *//*Android M*//*
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            iCalllback.onAllGranted();
-            return this;
-        }
-
-        reqStatus = 1;
-        *//*权限监测*//*
-        if (ContextCompat.checkSelfPermission(ctx, permission) != PackageManager.PERMISSION_GRANTED) {
-            if (isPermissionFirstReq(new String[]{permission})) {
-                *//*区别对待Fragment和Activity的权限申请方式:权限申请*//*
-                if (fragment == null)
-                    ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
-                else
-                    fragment.requestPermissions(new String[]{permission}, requestCode);
-                makePermissionRequested(new String[]{permission});
-            } else {
-                *//*【点了"拒绝"，没点"不再询问】"*//*
-     *//*【首次请求权限，这里也是返回false】*//*
-                if (activity != null && ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) || fragment != null && fragment.shouldShowRequestPermissionRationale(permission)) {
-                    if (fragment == null)
-                        ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
-                    else
-                        fragment.requestPermissions(new String[]{permission}, requestCode);
-                } else {
-
-                    *//*【点了"拒绝"，同时点了"不再询问",后续对于权限的请求皆为“拒绝“】*//*
-
-     *//*解决：Unable to add window -- token null is not valid; is your activity running?
-     *       Builder(Activity)
-     * *//*
-
-     *//*解决：You need to use a Theme.AppCompat theme (or descendant) with this activity.
-     *       android.app.AlertDialog，摒弃V7包下的
-     * *//*
-                    new AlertDialog.Builder(fragment == null ? activity : fragment.getActivity(), android.support.v7.appcompat.R.style.Base_Theme_AppCompat_Dialog_Alert).setTitle("提示信息").setMessage(permissionDesc).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}
-                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            intent.setData(Uri.parse("package:" + ctx.getPackageName()));
-                            ctx.startActivity(intent);
-                        }
-                    }).setCancelable(false).show();
-                }
-
-            }
-        } else {//有权限
-            reqStatus = 2;
-            iCalllback.onAllGranted();
-        }
-        return this;
-    }
-*/
 
     /**
      * 请求权限-一组权限
@@ -150,16 +78,8 @@ public class MPermissions {
      * @param permissions
      */
     private MPermissions reqPermissions(final int requestCode, final String[] permissions) {
-        /*if (this.permissions != null && this.permissions.length == permissions.length) {
-            for (int i = 0, len = permissions.length; i < len; i++) {
-                if (!permissions[i].equals(this.permissions[i]))
-                    throw new IllegalArgumentException("one MPermissions instance only can request one permission or one group permission");
-            }
-        } else if (this.permission != null)
-            throw new IllegalArgumentException("one MPermissions instance only can request one permission or one group permission");*/
-
         /*Android M*/
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && iCalllback != null) {
             iCalllback.onAllGranted();
             return this;
         }
@@ -170,7 +90,6 @@ public class MPermissions {
                 declinePermissions.add(permission);
         }
 
-        reqStatus = 1;
         /*权限监测*/
         if (declinePermissions.size() != 0) {
             if (isPermissionFirstReq(permissions)) {
@@ -210,21 +129,28 @@ public class MPermissions {
                     /*解决：You need to use a Theme.AppCompat theme (or descendant) with this activity.
                      *       android.app.AlertDialog，摒弃V7包下的
                      * */
-                    new AlertDialog.Builder(fragment == null ? activity : fragment.getActivity()).setTitle("提示信息").setMessage(permissionDesc).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}
-                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            intent.setData(Uri.parse("package:" + ctx.getPackageName()));
-                            ctx.startActivity(intent);
-                        }
-                    }).setCancelable(false).show();
+                    new AlertDialog.Builder(fragment == null ? activity : fragment.getActivity())
+                            .setTitle("提示信息")
+                            .setMessage(permissionDesc)
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}
+                            })
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    intent.setData(Uri.parse("package:" + ctx.getPackageName()));
+                                    //  使用Context的startActivity方法的話，就需要开启一个新的的task
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    ctx.startActivity(intent);
+                                }
+                            })
+                            .setCancelable(false)
+                            .show();
                 }
             }
-        } else {//有权限
-            reqStatus = 2;
+        } else if (iCalllback != null) {//有权限
             iCalllback.onAllGranted();
         }
         return this;
@@ -241,24 +167,13 @@ public class MPermissions {
         /*验证*/
         if (requestCode != this.requestCode) {
             return;
-        } /*else if (this.permission != null && !permissions[0].equals(this.permission)) {
-            return;
-        }*/ else if (this.permissions != null && this.permissions.length == permissions.length) {
+        } else if (this.permissions != null && this.permissions.length == permissions.length) {
             for (int i = 0, len = permissions.length; i < len; i++) {
                 if (!permissions[i].equals(this.permissions[i]))
                     return;
             }
         }
 
-       /* if (permission != null && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//单一
-            reqStatus = 2;
-            iCalllback.onAllGranted();
-            return;
-        } else if (permission != null) {
-            reqStatus = 3;
-            iCalllback.onSomeDenied();
-            return;
-        }*/
         if (permissions != null) {//一组
             List<String> declines = new ArrayList<>();
             for (int i = 0, len = grantResults.length; i < len; i++) {
@@ -267,16 +182,17 @@ public class MPermissions {
                     declines.add(permissions[i]);
                 }
             }
-            if (declines.size() != 0) {
-                reqStatus = 3;
-                String[] deny = new String[declines.size()];
-                iCalllback.onSomeDenied(declines.toArray(deny));
-                return;
-            } else {
-                reqStatus = 2;
-                iCalllback.onAllGranted();
-                return;
+            if (iCalllback != null) {
+                if (declines.size() != 0) {
+                    String[] deny = new String[declines.size()];
+                    iCalllback.onSomeDenied(declines.toArray(deny));
+                    return;
+                } else {
+                    iCalllback.onAllGranted();
+                    return;
+                }
             }
+
         }
     }
 
