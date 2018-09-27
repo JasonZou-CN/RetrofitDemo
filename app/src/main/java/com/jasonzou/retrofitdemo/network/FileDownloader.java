@@ -149,13 +149,13 @@ public class FileDownloader {
                     sendMsg(FAIL, new Object[]{id, e});
                 }/*catch (FileNotFoundException e) {
                     //服务器不存在该文件
-                    listener.onFail(e);
+                    listener.onSomeDenied(e);
                     e.printStackTrace();
                 } catch (MalformedURLException e) {
-                    listener.onFail(e);
+                    listener.onSomeDenied(e);
                     e.printStackTrace();
                 } catch (IOException e) {
-                    listener.onFail(e);
+                    listener.onSomeDenied(e);
                     e.printStackTrace();
                 } */
             }

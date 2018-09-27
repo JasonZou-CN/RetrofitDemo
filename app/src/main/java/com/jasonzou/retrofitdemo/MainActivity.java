@@ -74,26 +74,26 @@ public class MainActivity extends Activity {
         API api = APIMaster.getAPI();
         //        getProjectsAfterLogin(phone, api);
 
-        permiss = MPermissions.init(this, new MPermissions.ICalllback() {
+        permiss = MPermissions.newBuilder(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}).iCalllback(new MPermissions.ICalllback() {
             @Override
-            public void onSuccess() {
+            public void onAllGranted() {
                 uploadFile();
             }
 
             @Override
-            public void onFail() {
+            public void onSomeDenied(String[] avoids) {
 
             }
-        }).reqPermission(0, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }).requestCode(0).build().request();
 
         /*permiss = MPermissions.init(this, new MPermissions.ICalllback() {
             @Override
-            public void onSuccess() {
+            public void onAllGranted() {
                 downloadFile();
             }
 
             @Override
-            public void onFail() {
+            public void onSomeDenied() {
 
             }
         }).reqPermission(0, Manifest.permission.WRITE_EXTERNAL_STORAGE);*/
@@ -265,17 +265,17 @@ public class MainActivity extends Activity {
      * 调用ZXing的扫描二维码界面
      */
     private void toCaptureQRCode() {
-        zxing = MPermissions.init(this, new MPermissions.ICalllback() {
+        zxing = MPermissions.newBuilder(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}).iCalllback(new MPermissions.ICalllback() {
             @Override
-            public void onSuccess() {
+            public void onAllGranted() {
                 startActivity(new Intent(getBaseContext(), CaptureActivity.class));
             }
 
             @Override
-            public void onFail() {
+            public void onSomeDenied(String[] avoids) {
                 Logger.d("---权限onFail---");
             }
-        }).reqPermissions(0, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE});
+        }).build().request();
     }
 
     public void toZXingLib(View view) {
