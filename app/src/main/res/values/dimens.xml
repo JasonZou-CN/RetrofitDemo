@@ -1,0 +1,6 @@
+<resources>
+    <!--之前是55dp-->
+    <dimen name="titleBarHeight">49dp</dimen>
+    <dimen name="navBarHeight">55dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

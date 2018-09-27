@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RetrofitDemo</string>
+    <string name="long_text_demo">全家桶实战，模拟商城，完整的购物流程、后端运营平台，可以实现快速搭建企业级微服务项目</string>
 </resources>

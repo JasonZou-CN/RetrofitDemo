@@ -13,7 +13,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
  * Date:2017/7/28<br/>
  * Time:10:04<br/>
  * Desc:<br/>
+ * Andrsoid M 动态权限解决方案 <br/>
  * 1.单一权限的动态申请，<br/>
  * 2.处理了“拒绝”，并且”不再提醒“的情况<br/>
  * 3.一个实例只处理一个或者一组权限请求<br/>
@@ -41,8 +43,8 @@ public class MPermissions {
     private int reqStatus = 0;//0：未请求；1：已请求；2：已授权；3：已拒绝；4：不再提醒；
     private String[] permissions = null;
     private String permissionDesc = "当前应用缺少必要权限，相关功能暂时无法使用。如若需要，请单击【确定】按钮进行授权。";
-    private String[] permissionDescs = null;
     private String permission = null;
+
     /**
      * 不对外使用
      */
@@ -84,10 +86,6 @@ public class MPermissions {
         this.permissionDesc = permissionDesc;
     }
 
-    public void setPermissionDescs(String[] permissionDescs) {
-        this.permissionDescs = permissionDescs;
-    }
-
     /**
      * 请求权限
      *
@@ -117,7 +115,7 @@ public class MPermissions {
                 makePermissionRequested(new String[]{permission});
             } else {
                 /*【点了"拒绝"，没点"不再询问】"*/
-                /*首次请求权限，这里也是返回false*/
+                /*【首次请求权限，这里也是返回false】*/
                 if (activity != null && ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) || fragment != null && fragment.shouldShowRequestPermissionRationale(permission)) {
                     if (fragment == null)
                         ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
@@ -277,7 +275,7 @@ public class MPermissions {
             List<String> declines = new ArrayList<>();
             for (int i = 0, len = grantResults.length; i < len; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "权限申请失败: permission=" + permission);
+                    Logger.d(TAG, "权限申请失败: permission=" + permission);
                     declines.add(permissions[i]);
                 }
             }
