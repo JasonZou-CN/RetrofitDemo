@@ -2,6 +2,7 @@ package com.jasonzou.retrofitdemo;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.jasonzou.retrofitdemo.network.FileDownloader;
 import com.jasonzou.retrofitdemo.network.FileUploader;
 import com.jasonzou.retrofitdemo.util.MPermissions;
 import com.orhanobut.logger.Logger;
+import com.xys.libzxing.zxing.activity.CaptureActivity;
 
 import java.io.File;
 import java.util.HashMap;
@@ -43,6 +45,7 @@ public class MainActivity extends Activity {
     private EditText account;
     private android.widget.Button button;
     private MPermissions permiss;
+    private MPermissions zxing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,11 @@ public class MainActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        permiss.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permiss != null && requestCode == permiss.getRequestCode()) {
+            permiss.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        } else if (zxing != null && requestCode == zxing.getRequestCode()) {
+            zxing.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     public void login(View view) {
@@ -252,5 +259,26 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this, "exception", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * 调用ZXing的扫描二维码界面
+     */
+    private void toCaptureQRCode() {
+        zxing = MPermissions.init(this, new MPermissions.ICalllback() {
+            @Override
+            public void onSuccess() {
+                startActivity(new Intent(getBaseContext(), CaptureActivity.class));
+            }
+
+            @Override
+            public void onFail() {
+                Logger.d("---权限onFail---");
+            }
+        }).reqPermissions(0, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE});
+    }
+
+    public void toZXingLib(View view) {
+        toCaptureQRCode();
     }
 }

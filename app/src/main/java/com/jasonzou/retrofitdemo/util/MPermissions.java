@@ -43,7 +43,6 @@ public class MPermissions {
     private String permissionDesc = "当前应用缺少必要权限，相关功能暂时无法使用。如若需要，请单击【确定】按钮进行授权。";
     private String[] permissionDescs = null;
     private String permission = null;
-
     /**
      * 不对外使用
      */
@@ -63,6 +62,10 @@ public class MPermissions {
         mPermissions.ctx = activity.getBaseContext();
         mPermissions.iCalllback = iCalllback;
         return mPermissions;
+    }
+
+    public int getRequestCode() {
+        return requestCode;
     }
 
     /**
@@ -186,11 +189,11 @@ public class MPermissions {
         if (declinePermissions.size() != 0) {
             if (isPermissionFirstReq(permissions)) {
                 /*区别对待Fragment和Activity的权限申请方式:权限申请*/
-                String[] permissArr = new String[declinePermissions.size()];
+                String[] permissArr = declinePermissions.toArray(new String[declinePermissions.size()]);
                 if (fragment == null)
-                    ActivityCompat.requestPermissions(activity, declinePermissions.toArray(permissArr), requestCode);
+                    ActivityCompat.requestPermissions(activity, permissArr, requestCode);
                 else
-                    fragment.requestPermissions(declinePermissions.toArray(permissArr), requestCode);
+                    fragment.requestPermissions(permissArr, requestCode);
                 makePermissionRequested(declinePermissions.toArray(new String[declinePermissions.size()]));
             } else {
 
@@ -205,11 +208,12 @@ public class MPermissions {
                 }
 
                 /*【点了"拒绝"，没点"不再询问】"*/
+                String[] needReqPerms = needReReqPermissions.toArray(new String[needReReqPermissions.size()]);
                 if (needReReqPermissions.size() == declinePermissions.size()) {
                     if (fragment == null)
-                        ActivityCompat.requestPermissions(activity, (String[]) needReReqPermissions.toArray(), requestCode);
+                        ActivityCompat.requestPermissions(activity, needReqPerms, requestCode);
                     else
-                        fragment.requestPermissions(new String[needReReqPermissions.size()], requestCode);
+                        fragment.requestPermissions(needReqPerms, requestCode);
                 } else {
                     /*【点了"拒绝"，同时点了"不再询问",后续对于权限的请求皆为“拒绝“】*/
 
