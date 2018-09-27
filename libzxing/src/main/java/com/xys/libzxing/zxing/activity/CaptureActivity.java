@@ -171,10 +171,11 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         }
         inactivityTimer.onPause();
         beepManager.close();
-        cameraManager.closeDriver();
+        cameraManager.getCamera().setPreviewCallback(null);
         if (!isHasSurface) {
             scanPreview.getHolder().removeCallback(this);
         }
+        cameraManager.closeDriver();
         super.onPause();
     }
 
