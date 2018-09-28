@@ -18,7 +18,9 @@ import android.widget.Toast;
 import com.jasonzou.retrofitdemo.R;
 import com.jasonzou.retrofitdemo.bean.CaseList;
 import com.jasonzou.retrofitdemo.bean.CaseListParm;
+import com.jasonzou.retrofitdemo.bean.IMConversationState;
 import com.jasonzou.retrofitdemo.bean.UserInfo;
+import com.jasonzou.retrofitdemo.greendao.GreenDaoMaster;
 import com.jasonzou.retrofitdemo.network.API;
 import com.jasonzou.retrofitdemo.network.APIMaster;
 import com.jasonzou.retrofitdemo.network.FileDownloader;
@@ -30,6 +32,7 @@ import com.orhanobut.logger.Logger;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -302,5 +305,14 @@ public class MainActivity extends Activity {
 
     public void toChooesePics(View view) {
         startActivity(new Intent(this, ChooseImages.class));
+    }
+
+    /**简单插入
+     * @param view
+     */
+    public void greenDao(View view) {
+        IMConversationState state = new IMConversationState();
+        state.setTargetPhone(String.valueOf(new Date().getTime()));
+        GreenDaoMaster.getDaoSession().getIMConversationStateDao().insert(state);
     }
 }

@@ -76,4 +76,15 @@
         tools:layout_editor_absoluteX="15dp"
         tools:layout_editor_absoluteY="53dp"/>
 
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="158dp"
+        android:layout_y="32dp"
+        android:onClick="greenDao"
+        android:text="greenDao"
+        tools:layout_editor_absoluteX="168dp"
+        tools:layout_editor_absoluteY="49dp"/>
+
 </AbsoluteLayout>
