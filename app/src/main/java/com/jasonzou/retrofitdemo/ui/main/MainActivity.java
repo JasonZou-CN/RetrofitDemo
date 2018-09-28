@@ -23,6 +23,7 @@ import com.jasonzou.retrofitdemo.network.API;
 import com.jasonzou.retrofitdemo.network.APIMaster;
 import com.jasonzou.retrofitdemo.network.FileDownloader;
 import com.jasonzou.retrofitdemo.network.FileUploader;
+import com.jasonzou.retrofitdemo.ui.chooseimgs.ChooseImages;
 import com.jasonzou.retrofitdemo.util.MPermissions;
 import com.jasonzou.retrofitdemo.util.MPopwindow;
 import com.orhanobut.logger.Logger;
@@ -297,5 +298,9 @@ public class MainActivity extends Activity {
                 .mAnim(R.style.BottomPopupWindowTheme)
                 .build();
         popup.showAtLocation(findViewById(Window.ID_ANDROID_CONTENT), Gravity.CENTER, 0, 0);
+    }
+
+    public void toChooesePics(View view) {
+        startActivity(new Intent(this, ChooseImages.class));
     }
 }

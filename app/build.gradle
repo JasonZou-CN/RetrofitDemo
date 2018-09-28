@@ -39,6 +39,9 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.17'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
 
+    // 图片选择器
+    implementation 'com.github.lovetuzitong:MultiImageSelector:1.2'
+
     // 二维码第三方依赖库整理
     implementation project(':zxing')
 }
