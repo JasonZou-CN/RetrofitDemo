@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,6 +24,7 @@ import com.jasonzou.retrofitdemo.network.APIMaster;
 import com.jasonzou.retrofitdemo.network.FileDownloader;
 import com.jasonzou.retrofitdemo.network.FileUploader;
 import com.jasonzou.retrofitdemo.util.MPermissions;
+import com.jasonzou.retrofitdemo.util.MPopwindow;
 import com.orhanobut.logger.Logger;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
@@ -87,21 +91,11 @@ public class MainActivity extends Activity {
             }
         }).requestCode(0).build().request();
 
-        /*permiss = MPermissions.init(this, new MPermissions.ICalllback() {
-            @Override
-            public void onAllGranted() {
-                downloadFile();
-            }
-
-            @Override
-            public void onSomeDenied() {
-
-            }
-        }).reqPermission(0, Manifest.permission.WRITE_EXTERNAL_STORAGE);*/
-
-
     }
 
+    /**
+     * 上传文件
+     */
     public void uploadFile() {
         String url = "https://lz.lcoce.com/lawyer/" + "upload/uploadAvatarFile";
         Map<String, String> param = new HashMap<>();
@@ -133,6 +127,9 @@ public class MainActivity extends Activity {
     }
 
 
+    /**
+     * 下载文件
+     */
     private void downloadFile() {
         String url = "https://lvzhe-project-file.oss-cn-beijing.aliyuncs.com/project2060/5adda34e39d39.jpg";
         File fileSaved = new File(Environment.getExternalStorageDirectory(), url.replace("/", "_"));
@@ -163,7 +160,7 @@ public class MainActivity extends Activity {
     }
 
 
-    /**
+    /**doOnNext(Consumer) + flatMap(Function)<br/>
      * 链式API请求,使用操作符，解决API嵌套调用
      *
      * @param phone
@@ -262,7 +259,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    /**
+    /**Android M 动态权限
      * 调用ZXing的扫描二维码界面
      */
     private void toCaptureQRCode() {
@@ -281,5 +278,24 @@ public class MainActivity extends Activity {
 
     public void toZXingLib(View view) {
         toCaptureQRCode();
+    }
+
+    /**popwindow
+     * @param view
+     */
+    public void showPop(View view) {
+        MPopwindow popup = MPopwindow.newBuilder(this, R.layout.dialog_commom)
+                .iOnDissmiss(new MPopwindow.IOnDissmiss() {
+                    @Override
+                    public boolean onIntercept() {
+                        Toast.makeText(MainActivity.this, "dissmiss...", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                })
+                .intercetpOutsideTouch(false)
+                .mWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+                .mAnim(R.style.BottomPopupWindowTheme)
+                .build();
+        popup.showAtLocation(findViewById(Window.ID_ANDROID_CONTENT), Gravity.CENTER, 0, 0);
     }
 }

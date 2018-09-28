@@ -53,5 +53,16 @@
         tools:layout_editor_absoluteX="151dp"
         tools:layout_editor_absoluteY="117dp"/>
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="36dp"
+        android:layout_y="115dp"
+        android:onClick="showPop"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="123dp"
+        tools:text="popwindow"/>
+
 
 </AbsoluteLayout>
