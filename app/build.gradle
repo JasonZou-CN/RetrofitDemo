@@ -10,6 +10,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ eventBusIndex : 'com.jasonzou.retrofitdemo.eventbus.MyEventBusIndex' ]
+            }
+        }
     }
     buildTypes {
         release {
@@ -57,6 +63,10 @@ dependencies {
 
     /*在线数据库查看器*/
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
+
+    //  事件总线
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.1.1'
 
     // 二维码第三方依赖库整理
     implementation project(':zxing')

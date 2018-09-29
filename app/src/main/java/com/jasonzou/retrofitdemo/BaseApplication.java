@@ -2,6 +2,7 @@ package com.jasonzou.retrofitdemo;
 
 import android.app.Application;
 
+import com.jasonzou.retrofitdemo.eventbus.EventBusMaster;
 import com.jasonzou.retrofitdemo.greendao.DaoSession;
 import com.jasonzou.retrofitdemo.greendao.GreenDaoMaster;
 import com.jasonzou.retrofitdemo.logger.LoggerMaster;
@@ -25,5 +26,6 @@ public class BaseApplication extends Application {
         LoggerMaster.initLogger();
         GreenDaoMaster.init(this);
         APIMaster.getInstance().init(this);
+        EventBusMaster.init();
     }
 }

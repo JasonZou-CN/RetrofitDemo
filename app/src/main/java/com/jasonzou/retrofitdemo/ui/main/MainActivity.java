@@ -20,6 +20,7 @@ import com.jasonzou.retrofitdemo.bean.CaseList;
 import com.jasonzou.retrofitdemo.bean.CaseListParm;
 import com.jasonzou.retrofitdemo.bean.IMConversationState;
 import com.jasonzou.retrofitdemo.bean.UserInfo;
+import com.jasonzou.retrofitdemo.eventbus.message.MessageEvent;
 import com.jasonzou.retrofitdemo.greendao.GreenDaoMaster;
 import com.jasonzou.retrofitdemo.network.API;
 import com.jasonzou.retrofitdemo.network.APIMaster;
@@ -30,6 +31,10 @@ import com.jasonzou.retrofitdemo.util.MPermissions;
 import com.jasonzou.retrofitdemo.util.MPopwindow;
 import com.orhanobut.logger.Logger;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.Date;
@@ -301,6 +306,24 @@ public class MainActivity extends Activity {
                 .mAnim(R.style.BottomPopupWindowTheme)
                 .build();
         popup.showAtLocation(findViewById(Window.ID_ANDROID_CONTENT), Gravity.CENTER, 0, 0);
+    }
+
+    @Subscribe(threadMode= ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        Logger.d(event.message);
+        Toast.makeText(this, event.message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     public void toChooesePics(View view) {

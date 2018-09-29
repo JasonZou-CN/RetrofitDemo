@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.jasonzou.retrofitdemo.R;
+import com.jasonzou.retrofitdemo.eventbus.message.MessageEvent;
 import com.jasonzou.retrofitdemo.util.ImageUriResolver;
 import com.jasonzou.retrofitdemo.util.MPermissions;
 import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -62,6 +65,7 @@ public class ChooseImages extends AppCompatActivity {
             if (requestCode==0) {
                 String path = ImageUriResolver.handleImageUri(data.getData(), this);
                 Logger.d(path);
+                EventBus.getDefault().post(new MessageEvent(path));
             }else if (requestCode==1){
                 // 获取返回的图片列表
                 List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
