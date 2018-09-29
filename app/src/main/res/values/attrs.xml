@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="backColor" format="color|reference"/>
+    <attr name="frontColor" format="color|reference"/>
+    <attr name="textSize" format="dimension"/>
+    <attr name="value" format="integer"/>
+    <attr name="max" format="integer"/>
+
+    <declare-styleable name="EditTextWithDeleteButton">
+        <attr name="delImg" format="reference"/>
+        <attr name="delImgWidth" format="dimension"/>
+        <attr name="delImgHeight" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundProgressBar">
+        <attr name="backColor"/>
+        <attr name="frontColor"/>
+        <attr name="textColor"/>
+        <attr name="textSize"/>
+        <attr name="value"/>
+        <attr name="max"/>
+        <attr name="isClockwise" format="boolean"/>
+        <attr name="mCurrentImg" format="reference"/><!--居中显示的图片-->
+        <attr name="barBorderWidth" format="dimension"/>
+        <attr name="mode">
+            <enum name="STROKE" value="0"/>
+            <enum name="STROKE_TEXT" value="1"/>
+            <enum name="FILL" value="2"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SwitchView">
+        <attr name="hasShadow" format="boolean"/>
+        <attr name="primaryColor" format="color"/>
+        <attr name="primaryColorDark" format="color"/>
+        <attr name="isOpened" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="TriAngle">
+        <attr name="borderColor" format="color|reference"/><!--边框色-->
+        <attr name="fillColor" format="color|reference"/><!--填充色-->
+        <attr name="bottomEdgeColor" format="color|reference"/><!--底边颜色-->
+    </declare-styleable>
+
+    <declare-styleable name="HorizonalProgressBar">
+        <attr name="backColor"/>
+        <attr name="frontColor"/>
+        <attr name="startColor" format="color|reference"/>
+        <attr name="endColor" format="color|reference"/>
+        <attr name="isGradientBar" format="boolean|reference"/>
+        <attr name="progress" format="integer"/>
+        <attr name="max"/>
+    </declare-styleable>
+</resources>
