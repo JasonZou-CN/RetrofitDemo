@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                tools:context=".ui.guidepage.GuidePageActivity"
+    >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="120dp"
+        android:gravity="center"
+        android:text="随时随地咨询专业律师"
+        android:textColor="#999999"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:id="@+id/pageIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|bottom"
+        android:orientation="horizontal"
+        android:paddingBottom="60dp">
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/launcher"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:text="点击进入"
+        android:visibility="gone"
+        android:textColor="#2e60ab"
+        />
+</RelativeLayout>
