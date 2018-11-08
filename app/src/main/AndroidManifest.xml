@@ -23,18 +23,20 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath"/>
         </provider>
-        <!--****Activity****-->
+        <!-- ****Activity**** -->
         <activity
             android:name=".ui.splash.LaunchActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".ui.guidepage.GuidePageActivity"/>
         <activity android:name=".ui.main.MainActivity"/>
         <activity android:name=".ui.chooseimgs.ChooseImages"/>
+        <activity android:name=".ui.gifloading.GifLoadingActivity"/>
     </application>
 
 </manifest>

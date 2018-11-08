@@ -32,7 +32,6 @@ android {
     //构建模式
     buildTypes {
         release {
-            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             // 自定义输出配置
             android.applicationVariants.all { variant ->
@@ -41,9 +40,6 @@ android {
                 }
             }
             signingConfig signingConfigs.appstore
-        }
-        debug {
-            minifyEnabled true
         }
     }
 
@@ -111,8 +107,10 @@ dependencies {
     /*greenDao*/
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'org.greenrobot:greendao-generator:3.2.2'
-//    glide图片加载库
+    //    glide图片加载库
     implementation 'com.github.bumptech.glide:glide:4.8.0'
+    //    Gif加载库 - (GIF的加载速度快于Glide)
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
     // 图片选择器
     implementation 'com.github.lovetuzitong:MultiImageSelector:1.2'
     /*在线数据库查看器*/

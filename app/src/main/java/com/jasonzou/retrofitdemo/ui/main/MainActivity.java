@@ -27,6 +27,7 @@ import com.jasonzou.retrofitdemo.network.APIMaster;
 import com.jasonzou.retrofitdemo.network.FileDownloader;
 import com.jasonzou.retrofitdemo.network.FileUploader;
 import com.jasonzou.retrofitdemo.ui.chooseimgs.ChooseImages;
+import com.jasonzou.retrofitdemo.ui.gifloading.GifLoadingActivity;
 import com.jasonzou.retrofitdemo.util.MPermissions;
 import com.jasonzou.retrofitdemo.util.MPopwindow;
 import com.orhanobut.logger.Logger;
@@ -317,7 +318,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -337,5 +340,9 @@ public class MainActivity extends Activity {
         IMConversationState state = new IMConversationState();
         state.setTargetPhone(String.valueOf(new Date().getTime()));
         GreenDaoMaster.getDaoSession().getIMConversationStateDao().insert(state);
+    }
+
+    public void gifLoading(View view) {
+        view.getContext().startActivity(new Intent(view.getContext(), GifLoadingActivity.class));
     }
 }
