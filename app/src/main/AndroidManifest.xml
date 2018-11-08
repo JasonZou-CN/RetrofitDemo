@@ -37,6 +37,7 @@
         <activity android:name=".ui.main.MainActivity"/>
         <activity android:name=".ui.chooseimgs.ChooseImages"/>
         <activity android:name=".ui.gifloading.GifLoadingActivity"/>
+        <activity android:name=".ui.refreshandloadmore.RefreshLoadmoreActivity"/>
     </application>
 
 </manifest>

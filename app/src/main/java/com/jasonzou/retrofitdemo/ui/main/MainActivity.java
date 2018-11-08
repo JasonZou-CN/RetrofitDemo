@@ -26,8 +26,10 @@ import com.jasonzou.retrofitdemo.network.API;
 import com.jasonzou.retrofitdemo.network.APIMaster;
 import com.jasonzou.retrofitdemo.network.FileDownloader;
 import com.jasonzou.retrofitdemo.network.FileUploader;
+import com.jasonzou.retrofitdemo.ui.BaseActivity;
 import com.jasonzou.retrofitdemo.ui.chooseimgs.ChooseImages;
 import com.jasonzou.retrofitdemo.ui.gifloading.GifLoadingActivity;
+import com.jasonzou.retrofitdemo.ui.refreshandloadmore.RefreshLoadmoreActivity;
 import com.jasonzou.retrofitdemo.util.MPermissions;
 import com.jasonzou.retrofitdemo.util.MPopwindow;
 import com.orhanobut.logger.Logger;
@@ -54,7 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
 
     private TextView who;
     private EditText account;
@@ -344,5 +346,9 @@ public class MainActivity extends Activity {
 
     public void gifLoading(View view) {
         view.getContext().startActivity(new Intent(view.getContext(), GifLoadingActivity.class));
+    }
+
+    public void refAndLoadmore(View view) {
+        view.getContext().startActivity(new Intent(view.getContext(), RefreshLoadmoreActivity.class));
     }
 }

@@ -7,16 +7,20 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.jasonzou.retrofitdemo.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class GifLoadingActivity extends Activity {
 
-    private android.widget.ImageView loading2;
+    @BindView(R.id.loading2)
+    ImageView loading2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gif_loading);
-        this.loading2 = (ImageView) findViewById(R.id.loading2);
+        ButterKnife.bind(this);
         Glide.with(this).asGif().load(R.drawable.big_loading).into(loading2);
     }
 }

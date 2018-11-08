@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="16dp"
+        android:layout_y="186dp"
+        android:onClick="refAndLoadmore"
+        android:text="TO:刷新&amp;加载"
+        tools:layout_editor_absoluteX="22dp"
+        tools:layout_editor_absoluteY="139dp"/>
+
     <TextView
         android:id="@+id/who"
         android:layout_width="match_parent"
