@@ -23,9 +23,9 @@ public class GreenDaoMaster {
      */
     public static void init(Context context) {
         if (hasInited) {
-            Logger.w("WARRING: init(Context) has call in Application !");
+            Logger.w("init(Context) has call in Application !");
         } else {
-            DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(context, "lawyer-db", null);
+            DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(context, "retrofit-demo-db", null);
             SQLiteDatabase db = mHelper.getWritableDatabase();
             DaoMaster mDaoMaster = new DaoMaster(db);
             // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。

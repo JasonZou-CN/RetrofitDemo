@@ -19,7 +19,7 @@ android {
         }
     }
 
-    /*签名配置*/
+    //签名配置
     signingConfigs {
         appstore {
             keyAlias '中企法顾'
@@ -45,7 +45,7 @@ android {
 
     flavorDimensions "default"//渠道包相关配置
 
-    /*渠道包*/
+    //渠道包
     productFlavors {
         xiaomi {
             dimension "default"
@@ -67,7 +67,7 @@ android {
     }
 }
 
-/*方法定义*/
+//方法定义
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC+8"))
 }
@@ -75,9 +75,9 @@ def releaseTime() {
 greendao {
     schemaVersion 1//数据库版本号
     daoPackage 'com.jasonzou.retrofitdemo.greendao'//设置DaoMaster、DaoSession、Dao包名
-    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
+    // targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
     // targetGenDirTest //设置生成单元测试目录
-//    generateTests true//设置自动生成单元测试用例
+//     generateTests true//设置自动生成单元测试用例
 }
 
 dependencies {
@@ -106,21 +106,21 @@ dependencies {
     // dagger 2
     implementation 'com.google.dagger:dagger:2.17'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
-    //        butterknife
+    // butterknife
     implementation 'com.jakewharton:butterknife:9.0.0-rc1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
-    /*greenDao*/
+    // greenDao
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'org.greenrobot:greendao-generator:3.2.2'
-    //    glide图片加载库
+    // glide图片加载库
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    //    Gif加载库 - (GIF的加载速度快于Glide)
+    // Gif加载库 - (GIF的加载速度快于Glide)
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
     // 图片选择器
     implementation 'com.github.lovetuzitong:MultiImageSelector:1.2'
-    /*在线数据库查看器*/
+    // 在线数据库查看器
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
-    //  事件总线 EventBus
+    // 事件总线 EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.1.1'
     // 二维码第三方依赖库整理

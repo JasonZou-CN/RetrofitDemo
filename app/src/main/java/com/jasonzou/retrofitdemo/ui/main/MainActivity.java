@@ -1,7 +1,6 @@
 package com.jasonzou.retrofitdemo.ui.main;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,10 +17,8 @@ import android.widget.Toast;
 import com.jasonzou.retrofitdemo.R;
 import com.jasonzou.retrofitdemo.bean.CaseList;
 import com.jasonzou.retrofitdemo.bean.CaseListParm;
-import com.jasonzou.retrofitdemo.bean.IMConversationState;
 import com.jasonzou.retrofitdemo.bean.UserInfo;
 import com.jasonzou.retrofitdemo.eventbus.message.MessageEvent;
-import com.jasonzou.retrofitdemo.greendao.GreenDaoMaster;
 import com.jasonzou.retrofitdemo.network.API;
 import com.jasonzou.retrofitdemo.network.APIMaster;
 import com.jasonzou.retrofitdemo.network.FileDownloader;
@@ -29,6 +26,7 @@ import com.jasonzou.retrofitdemo.network.FileUploader;
 import com.jasonzou.retrofitdemo.ui.BaseActivity;
 import com.jasonzou.retrofitdemo.ui.chooseimgs.ChooseImages;
 import com.jasonzou.retrofitdemo.ui.gifloading.GifLoadingActivity;
+import com.jasonzou.retrofitdemo.ui.greendao.DatabaseActivity;
 import com.jasonzou.retrofitdemo.ui.refreshandloadmore.RefreshLoadmoreActivity;
 import com.jasonzou.retrofitdemo.util.MPermissions;
 import com.jasonzou.retrofitdemo.util.MPopwindow;
@@ -40,7 +38,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -339,9 +336,7 @@ public class MainActivity extends BaseActivity {
      * @param view
      */
     public void greenDao(View view) {
-        IMConversationState state = new IMConversationState();
-        state.setTargetPhone(String.valueOf(new Date().getTime()));
-        GreenDaoMaster.getDaoSession().getIMConversationStateDao().insert(state);
+        view.getContext().startActivity(new Intent(view.getContext(),DatabaseActivity.class) );
     }
 
     public void gifLoading(View view) {
