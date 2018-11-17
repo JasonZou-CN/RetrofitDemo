@@ -3,13 +3,13 @@ package com.jasonzou.retrofitdemo.bean;
 import android.text.TextUtils;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 @Entity
 public class User {
     //一定使用Long,(使用long会出现无法存入数据的问题)
-    @Id(autoincrement = true)
+    @Id
     private Long id;
     private String account;
     private String password;
@@ -25,14 +25,6 @@ public class User {
 
     @Generated(hash = 586692638)
     public User() {
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getAccount() {
@@ -65,5 +57,18 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", account='" + account + '\'' + ", password='" + password + '\'' + ", age=" + age + '}';
     }
 }

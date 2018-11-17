@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.jasonzou.retrofitdemo.eventbus.EventBusMaster;
 import com.jasonzou.retrofitdemo.greendao.DaoSession;
-import com.jasonzou.retrofitdemo.greendao.GreenDaoMaster;
+import com.jasonzou.retrofitdemo.greendao.DbMaster;
 import com.jasonzou.retrofitdemo.logger.LoggerMaster;
 import com.jasonzou.retrofitdemo.network.APIMaster;
 
@@ -24,7 +24,7 @@ public class BaseApplication extends Application {
         super.onCreate();
 
         LoggerMaster.initLogger();
-        GreenDaoMaster.init(this);
+        DbMaster.init(this);
         APIMaster.getInstance().init(this);
         EventBusMaster.init();
     }
