@@ -176,42 +176,47 @@ public class MainActivity extends BaseActivity {
      * @param api
      */
     private void getProjectsAfterLogin(String phone, final API api) {
-        api.loginWithRxJava(phone, "123456", "account").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnNext(new Consumer<UserInfo>() {
-            @Override
-            public void accept(UserInfo userInfo) throws Exception {
-                who.setText(userInfo.data.list.realname);
-                Logger.d("登录用户：" + userInfo.data.list.realname);
-            }
-        }).observeOn(Schedulers.io()).flatMap(new Function<UserInfo, ObservableSource<CaseList>>() {
-            @Override
-            public ObservableSource<CaseList> apply(UserInfo userInfo) throws Exception {
-                CaseListParm parm = new CaseListParm();
-                parm.uid = userInfo.data.list.uid;
-                parm.token = userInfo.data.list.token;
-                parm.category = 1;
-                parm.typeId = 0;
-                parm.pageSize = 1;
-                parm.listRows = 2;
-                parm.sort = 2;
-                parm.keywords = "";
-                return api.getProjectList(parm);
-            }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<CaseList>() {
-            @Override
-            public void accept(CaseList caseList) throws Exception {
-                if (caseList.data.list == null || caseList.data.list.size() == 0) {
-                    return;
-                }
-                who.setText(caseList.data.list.get(0).title);
-                Logger.d("项目1：{名字：" + caseList.data.list.get(0).name + "}");
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                throwable.printStackTrace();
-                Logger.d("exception:" + throwable.getMessage());
-            }
-        });
+        api.loginWithRxJava(phone, "123456", "account")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<UserInfo>() {
+                    @Override
+                    public void accept(UserInfo userInfo) throws Exception {
+                        who.setText(userInfo.data.list.realname);
+                        Logger.d("登录用户：" + userInfo.data.list.realname);
+                    }
+                }).observeOn(Schedulers.io()).flatMap(new Function<UserInfo, ObservableSource<CaseList>>() {
+                        @Override
+                        public ObservableSource<CaseList> apply(UserInfo userInfo) throws Exception {
+                            CaseListParm parm = new CaseListParm();
+                            parm.uid = userInfo.data.list.uid;
+                            parm.token = userInfo.data.list.token;
+                            parm.category = 1;
+                            parm.typeId = 0;
+                            parm.pageSize = 1;
+                            parm.listRows = 2;
+                            parm.sort = 2;
+                            parm.keywords = "";
+                            return api.getProjectList(parm);
+                        }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CaseList>() {
+                    @Override
+                    public void accept(CaseList caseList) throws Exception {
+                        if (caseList.data.list == null || caseList.data.list.size() == 0) {
+                            return;
+                        }
+                        who.setText(caseList.data.list.get(0).title);
+                        Logger.d("项目1：{名字：" + caseList.data.list.get(0).name + "}");
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            throwable.printStackTrace();
+                            Logger.d("exception:" + throwable.getMessage());
+                        }
+                    });
     }
 
     /**
